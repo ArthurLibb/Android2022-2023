@@ -2,7 +2,7 @@
 #### API
 Deze applicatie maakt gebruik van een API (de node.js backend)
 
-## De app gebruiken
+## De app gebruiken 
 
 ####  Alvorens:
 - open deze directory binnen android studio
