@@ -3,7 +3,7 @@ package com.hogent.android.network.services
 
 import com.hogent.android.data.entities.Customer
 import com.hogent.android.network.Config
-import com.hogent.android.network.dtos.LoginCredentials
+import com.hogent.android.network.dtos.request.LoginCredentials
 import com.hogent.android.network.dtos.Register
 import retrofit2.Response
 import retrofit2.http.Body

@@ -2,7 +2,7 @@ package com.hogent.android.data.repositories
 
 import com.hogent.android.data.entities.Course
 import com.hogent.android.data.entities.Customer
-import com.hogent.android.network.dtos.LoginCredentials
+import com.hogent.android.network.dtos.request.LoginCredentials
 import com.hogent.android.network.dtos.Register
 import com.hogent.android.network.services.CustomerApi
 import com.hogent.android.ui.components.forms.RegisterForm

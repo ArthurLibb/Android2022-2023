@@ -2,6 +2,7 @@ package com.hogent.android.network
 
 import com.squareup.moshi.*
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import okhttp3.OkHttpClient
 import okhttp3.ResponseBody
 import retrofit2.Converter
 import retrofit2.Retrofit
@@ -17,17 +18,21 @@ import java.util.*
 
 class Config {
     companion object{
-        private const val BASE_URL = "http://10.0.2.2:9000/api/"
+        private const val BASE_URL = "http://10.0.2.2:5000/api/"
         val moshi = Moshi.Builder()
             .add(KotlinJsonAdapterFactory())
             .add(LocalDateAdapter())
             .build()
 
+        val okHttpClient = OkHttpClient.Builder()
+            .build();
+
         fun createRetrofit(endpoint : String): Retrofit{
             return Retrofit.Builder()
                 .addConverterFactory(MoshiConverterFactory.create(moshi))
                 .baseUrl(BASE_URL + endpoint)
-                .build()
+                .client(okHttpClient)
+                .build();
         }
 
     }
