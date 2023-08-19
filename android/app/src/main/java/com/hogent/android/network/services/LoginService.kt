@@ -14,7 +14,7 @@ private val retrofit = Config.createRetrofit(URL)
 
 interface LoginApiService{
 
-    @POST("login")
+    @POST("android")
     suspend fun loginKlant(@Body dto : LoginCredentials): Response<LoginReponse>
 
     @POST("register")
@@ -22,5 +22,5 @@ interface LoginApiService{
 }
 
 object LoginApi{
-    val loginApi : LoginApiService by lazy { retrofit.create(LoginApiService::class.java)}
+    val loginApi : LoginApiService by lazy {retrofit.create(LoginApiService::class.java)}
 }

@@ -6,4 +6,9 @@ class RegisterKlant (
     val password : String,
     val email : String,
     val phoneNumber : String
-)
+){
+    //debug
+    override fun toString(): String {
+        return "RegisterKlant(firstname='$firstname', lastname='$lastname', password='$password', email='$email', phoneNumber='$phoneNumber')"
+    }
+}

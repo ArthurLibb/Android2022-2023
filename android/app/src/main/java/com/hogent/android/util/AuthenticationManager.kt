@@ -2,14 +2,16 @@ package com.hogent.android.util
 
 import androidx.lifecycle.MutableLiveData
 import com.hogent.android.data.entities.Customer
+import com.hogent.android.network.services.CustomerApi.customerService
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import timber.log.Timber
 
 
 class AuthenticationManager() {
 
     val klant = MutableLiveData<Customer?>()
     var authenticationState = MutableLiveData(AuthenticationState.UNAUTHENTICATED)
-
-
 
     companion object {
         @Volatile
@@ -25,23 +27,40 @@ class AuthenticationManager() {
         }
 
         fun getCustomer(): Customer?{
-            if (!::instance.isInitialized) {
-                return null;
-            }
             return instance.klant.value
         }
         fun loggedIn(): Boolean{
-            if (!::instance.isInitialized) {
-                return false;
-            }
             return instance.loggedIn()
         }
-        fun setCustomer(customer: Customer?){
+
+        suspend fun setCustomer(id: Int){
             if (!::instance.isInitialized) {
-                throw IllegalArgumentException("")
+                throw IllegalArgumentException("Error in Authenticationmanager.")
             }else{
-                instance.klant.postValue(customer)
-                instance.authenticationState.postValue(AuthenticationState.AUTHENTICATED)
+                val klant: Customer? = fetchKlantById(id)
+
+                if(klant != null){
+                    instance.klant.postValue(klant)
+                    instance.authenticationState.postValue(AuthenticationState.AUTHENTICATED)
+                }
+            }
+        }
+
+        private suspend fun fetchKlantById(id :Int): Customer? {
+            return try{
+                withContext(Dispatchers.IO){
+                    val response = customerService.getCustomer(id)
+                    Timber.d("Getting customer")
+                    if(response.isSuccessful){
+                        response.body()
+                    }
+                    else{
+                        null
+                    }
+                }
+            }catch (e :Exception){
+                Timber.e("Faild to get klant by Id");
+                null
             }
         }
     }

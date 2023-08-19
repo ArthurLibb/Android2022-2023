@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
 import com.hogent.android.R
 import com.hogent.android.data.repositories.CustomerRepository
+import com.hogent.android.data.repositories.LoginRepository
 import com.hogent.android.databinding.FragmentRegisterBinding
 import com.hogent.android.ui.login.LoginFragment
 import com.hogent.android.util.closeKeyboardOnTouch
@@ -29,7 +30,7 @@ class RegisterFragment : Fragment() {
             inflater, R.layout.fragment_register, container, false
         )
         val application = requireNotNull(this.activity).application
-        val factory = RegisterFactoryModel(CustomerRepository(), application)
+        val factory = RegisterFactoryModel(LoginRepository(), application)
         viewModel = ViewModelProvider(this, factory)[RegisterViewModel::class.java]
 
         binding.lifecycleOwner = this

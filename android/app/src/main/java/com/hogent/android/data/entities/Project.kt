@@ -4,9 +4,9 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class Project(
-    val name : String,
-    val customer_id : Int,
-    val id: Int = 0,
+   val id : Int,
+   val name : String,
+   val virtualMachines : List<VirtualMachine>
     )
 
 

@@ -1,3 +1,3 @@
 package com.hogent.android.network.dtos.response
 
-data class LoginReponse(val id : Int){}
+data class CustomerEditedReponse(val id : Int){}

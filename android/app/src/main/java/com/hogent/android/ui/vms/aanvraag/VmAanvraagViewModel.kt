@@ -31,7 +31,7 @@ class VmAanvraagViewModel(val repo : VmAanvraagRepository): ViewModel() {
     init {
         Timber.d("INIT IN VMAANVRAAG VIEWMODEL")
         runBlocking {
-            refreshProjects()
+            //refreshProjects()
         }
     }
 

@@ -3,10 +3,10 @@ package com.hogent.android.ui.klant
 import android.text.Editable
 import android.view.View
 import androidx.lifecycle.*
-import com.hogent.android.data.entities.ContactDetails1
-import com.hogent.android.data.entities.ContactDetails2
+import com.hogent.android.data.entities.ContactDetails
 import com.hogent.android.data.entities.Customer
 import com.hogent.android.data.repositories.CustomerRepository
+import com.hogent.android.network.dtos.request.CustomerUpdate
 import com.hogent.android.ui.components.forms.ContactOne
 import com.hogent.android.ui.components.forms.ContactTwo
 import com.hogent.android.ui.components.forms.CustomerContactEditForm
@@ -26,7 +26,6 @@ class CustomerViewModel (private val repo: CustomerRepository) : ViewModel() {
     private val _errorToast = MutableLiveData<Boolean>()
     private val _successToast = MutableLiveData<Boolean>()
     private val _failsafeRedirect = MutableLiveData(false)
-
 
 
     val klant: LiveData<Customer>
@@ -112,24 +111,29 @@ class CustomerViewModel (private val repo: CustomerRepository) : ViewModel() {
 
     fun onEditButtonPressed() {
         inEditMode.postValue(true)
-        val contactps1 = klant.value!!.contactPs1
-        val contactps2 = klant.value!!.contactPs2
+        val contactps1 = klant.value!!.contactPersoon
+        val contact2 = klant.value!!.reserveContactPersoon
         var contactOne = ContactOne("", "", "")
         var contactTwo = ContactTwo("", "", "")
+        Timber.d(contactps1.toString())
 
         if (contactps1 != null) {
+            val phone = contactps1.phoneNumber ?: ""
+            val email = contactps1.email ?: ""
             contactOne = ContactOne(
-                contactps1.contact1_email!!,
-                contactps1.contact1_phone!!,
-                contactps1.contact1_firstname + " " + contactps1.contact1_lastname
+                email,
+                phone,
+                contactps1.firstname + " " + contactps1.lastname
             );
             Timber.d("Contactps1: %s", contactOne.toString())
         }
-        if (contactps2 != null) {
+        if (contactTwo != null){
+            val phone = contact2?.phoneNumber ?: ""
+            val email = contact2?.email ?: ""
             contactTwo = ContactTwo(
-                contactps2.contact2_email!!,
-                contactps2.contact2_phone!!,
-                contactps2.contact2_firstname + " " + contactps2.contact2_lastname
+                email,
+                phone,
+                contact2?.firstname + " " + contact2?.lastname
             );
         }
 
@@ -165,26 +169,20 @@ class CustomerViewModel (private val repo: CustomerRepository) : ViewModel() {
 
     private fun persistCustomer() {
         val customer: Customer = klant!!.value!!.copy()
+        val updatedCustomer = CustomerUpdate(customer.firstName, customer.name, customer.email,
+            customer.phoneNumber, customer.bedrijf, customer.opleiding, customer.contactPersoon, customer.reserveContactPersoon )
 
-        val contactDetails1 = ContactDetails1(
+        val contactDetails = ContactDetails(
             _form.value!!.contact1.phone,
             _form.value!!.contact1.email,
             _form.value!!.contact1.fullName.split(" ")[0],
             _form.value!!.contact1.fullName.substringAfter(" ")
         );
-        customer.contactPs1 = contactDetails1
-        if (_form.value!!.contact2.isValid()) {
-            val contactDetails2 = ContactDetails2(
-                _form.value!!.contact2.phone,
-                _form.value!!.contact2.email,
-                _form.value!!.contact2.fullName.split(" ")[0],
-                _form.value!!.contact2.fullName.substringAfter(" ")
-            );
-            customer.contactPs2 = contactDetails2
-        }
+        customer.contactPersoon = contactDetails
+
         viewModelScope.launch(Dispatchers.Main) {
             Timber.d("Sending to backend ID: %d  and customer: %s", customer.id, customer.toString())
-            val customer = repo.updateCustomer(customer.id, customer)
+            repo.updateCustomer(customer.id, updatedCustomer)
             _klant.postValue(customer!!);
         }
     }
