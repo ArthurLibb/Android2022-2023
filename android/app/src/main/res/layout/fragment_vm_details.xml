@@ -267,7 +267,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="200dp"
             android:layout_marginTop="5dp"
-            android:text="@{@string/backupDateDetail(vmViewModel.vm.backUp.lastBackUp)}"
+            android:text="@{@string/backupDateDetail(vmViewModel.vm.backUp.lastBackUp.toString())}"
             tools:text="Backup: 18/02/2022"
             app:layout_constraintStart_toStartOf="@+id/hardware_detail"
             app:layout_constraintTop_toBottomOf="@+id/backupDetail"
