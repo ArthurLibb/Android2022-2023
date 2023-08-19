@@ -7,7 +7,6 @@ import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.hogent.android.data.entities.Customer
 import com.hogent.android.data.repositories.CustomerRepository
 import com.hogent.android.data.repositories.LoginRepository
 import com.hogent.android.ui.components.forms.RegisterForm

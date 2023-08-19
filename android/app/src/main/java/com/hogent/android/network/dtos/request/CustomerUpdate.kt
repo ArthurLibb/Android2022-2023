@@ -1,7 +1,6 @@
 package com.hogent.android.network.dtos.request
 
 import com.hogent.android.data.entities.ContactDetails
-import com.hogent.android.data.entities.Course
 
 class CustomerUpdate (
     var firstname : String,

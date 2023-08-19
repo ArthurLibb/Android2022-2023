@@ -10,6 +10,7 @@ import timber.log.Timber
 
 class AuthenticationManager() {
 
+    val IdKlant = MutableLiveData<Int>()
     val klant = MutableLiveData<Customer?>()
     var authenticationState = MutableLiveData(AuthenticationState.UNAUTHENTICATED)
 
@@ -26,6 +27,9 @@ class AuthenticationManager() {
             }
         }
 
+        fun getKlantId() : Int?{
+            return instance.IdKlant.value
+        }
         fun getCustomer(): Customer?{
             return instance.klant.value
         }
@@ -37,8 +41,8 @@ class AuthenticationManager() {
             if (!::instance.isInitialized) {
                 throw IllegalArgumentException("Error in Authenticationmanager.")
             }else{
+                instance.IdKlant.postValue(id)
                 val klant: Customer? = fetchKlantById(id)
-
                 if(klant != null){
                     instance.klant.postValue(klant)
                     instance.authenticationState.postValue(AuthenticationState.AUTHENTICATED)
@@ -52,7 +56,8 @@ class AuthenticationManager() {
                     val response = customerService.getCustomer(id)
                     Timber.d("Getting customer")
                     if(response.isSuccessful){
-                        response.body()
+                        Timber.d(response.body().toString())
+                         response.body()
                     }
                     else{
                         null

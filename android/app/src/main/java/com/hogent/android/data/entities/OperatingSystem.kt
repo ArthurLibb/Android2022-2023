@@ -10,14 +10,23 @@ enum class OperatingSystem {
     FEDORA_36,
     FEDORA_35;
 
-    fun NaarString(): String{
-        return when(this){
-            WINDOWS_10 -> "Windows 10"
-            WINDOWS_SERVER2019 -> "Windows server 2019"
-            KALI_LINUX -> "Kali Linux"
-            UBUNTU_22_04 -> "Ubuntu 22 04"
-            FEDORA_36 -> "Fedora 36"
-            FEDORA_35 -> "Fedora 35"
+    fun to_string(): String {
+        val strings = this.name.split("_")
+        var output = "";
+
+        for ((i, string) in strings.withIndex()) {
+
+            if (i != 0) {
+                output += " "
+            }
+            if (string.isDigitsOnly()) {
+                output += string
+            } else if (!string[0].isDigit()) {
+                output += string.lowercase().replaceRange(0..0, string[0].uppercase())
+            } else {
+                output += string.lowercase()
+            }
         }
+        return output;
     }
 }

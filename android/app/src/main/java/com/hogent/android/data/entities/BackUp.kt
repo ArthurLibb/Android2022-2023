@@ -7,7 +7,7 @@ import java.time.LocalDate
 @JsonClass(generateAdapter = true)
 data class Backup(
     val type: BackupType?,
-    val date: LocalDate?,
+    val lastBackUp: LocalDate?,
     val id : Int?
 )
 

@@ -81,12 +81,12 @@ class VmAanvraagFragment : Fragment(){
             }
         }
 
-      /*  vmAanvraagView.navToList.observe(viewLifecycleOwner){
+       vmAanvraagView.navToList.observe(viewLifecycleOwner){
             if(it){
                 NavHostFragment.findNavController(this).navigate(VmAanvraagFragmentDirections.actionFromRequestToList());
                 vmAanvraagView.doneNavToList()
             }
-        }*/
+        }
 
         return binding.root
     }
@@ -165,7 +165,7 @@ class VmAanvraagFragment : Fragment(){
             adapterProject.clear();
             adapterProject.add("")
             adapterProject.add("+ Project toevoegen")
-            it.forEach { project ->
+            it.projects.forEach { project ->
                 adapterProject.add(project.name)
             }
             adapterProject.notifyDataSetChanged()
@@ -191,12 +191,6 @@ class VmAanvraagFragment : Fragment(){
             override fun onNothingSelected(p0: AdapterView<*>?) {}
         }
 
-
-
-        binding.groupModeVm.setOnCheckedChangeListener { radioGroup, i ->
-            val value = binding.root.findViewById<RadioButton>(radioGroup.checkedRadioButtonId)
-            binding.viewmodel!!.modeChanged(value?.text.toString())
-        }
 
         binding.groupOsVm.setOnCheckedChangeListener { radioGroup, i ->
             val value = binding.root.findViewById<RadioButton>(radioGroup.checkedRadioButtonId)

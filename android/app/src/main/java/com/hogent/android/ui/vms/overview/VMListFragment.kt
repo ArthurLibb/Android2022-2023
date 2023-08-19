@@ -58,7 +58,7 @@ class VMListFragment : Fragment() {
 
         viewModel.projecten.observe(viewLifecycleOwner, Observer {
             recyclerView.adapter = ProjectListAdapter(
-                it,
+                it.projects,
                 viewModel.virtualmachine.value,
                 this.context);
 

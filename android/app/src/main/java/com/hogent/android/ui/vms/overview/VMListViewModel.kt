@@ -5,6 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.hogent.android.data.entities.*
 import com.hogent.android.data.repositories.VmOverviewRepository
+import com.hogent.android.network.dtos.response.ProjectResponse
+import com.hogent.android.network.dtos.response.VirtualmachineIndex
 import com.hogent.android.util.AuthenticationManager
 import kotlinx.coroutines.runBlocking
 import timber.log.Timber
@@ -12,14 +14,14 @@ import timber.log.Timber
 
 class VMListViewModel(val repo: VmOverviewRepository) : ViewModel() {
 
-    private val _projecten = MutableLiveData<List<Project>>()
-    private var _virtualmachine = MutableLiveData<List<VirtualMachine>>()
+    private val _projecten = MutableLiveData<ProjectResponse>()
+    private var _virtualmachine = MutableLiveData<List<VirtualmachineIndex>>()
 
 
-    val projecten: LiveData<List<Project>>
+    val projecten: LiveData<ProjectResponse>
         get() = _projecten;
 
-    val virtualmachine: LiveData<List<VirtualMachine>>
+    val virtualmachine: LiveData<List<VirtualmachineIndex>>
         get() = _virtualmachine;
 
     init {
@@ -29,40 +31,29 @@ class VMListViewModel(val repo: VmOverviewRepository) : ViewModel() {
     }
 
     suspend fun refreshProjects() {
-        val customerId = AuthenticationManager.getCustomer()!!.id
-        val virtualMachineList = mutableListOf<VirtualMachine>()
+        val customerId = AuthenticationManager.getKlantId()!!
+        val virtualMachineList = mutableListOf<VirtualmachineIndex>()
 
         _projecten.value = repo.getByCustomerId(customerId)
         Timber.d(
             String.format(
                 "Landed on vmlist viewmodel page, this user has %d projects",
-                projecten.value?.size ?: 0
+                projecten.value?.projects?.size ?: 0
             )
         )
-
         Timber.wtf(_projecten.value.toString())
 
-
-        if(_projecten.value == null || _projecten.value!!.isEmpty()){
-            _projecten.postValue(listOf( Project("Geen projecten", customerId, -1)))
+        if(_projecten.value == null || _projecten.value!!.projects.isEmpty()){
+            _projecten.postValue(ProjectResponse( listOf(Project(-1, "Geen projecten", null))))
             return
         }
 
-        _projecten.value?.forEach { project ->
-            val projectVMs = repo.getByProjectId(project.id)
-
-            Timber.d(
-                String.format(
-                    "project: %s, has %d virtual machine(s)",
-                    project.name,
-                    projectVMs?.size ?: 0
-                )
-            )
+        _projecten.value?.projects?.forEach { project ->
+            val projectVMs = project.virtualMachines
 
             if (projectVMs != null) {
                 virtualMachineList.addAll(projectVMs)
             }
-
         }
         _virtualmachine.value = virtualMachineList
     }

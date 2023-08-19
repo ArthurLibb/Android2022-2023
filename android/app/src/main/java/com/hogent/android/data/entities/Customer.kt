@@ -15,7 +15,7 @@ data class Customer(
     var bedrijf: String? = null,
     var contactPersoon:  ContactDetails? ,
     var reserveContactPersoon: ContactDetails?,
-    val id: Int = 0
+    val id: Int
 )
 
 @JsonClass(generateAdapter = true)

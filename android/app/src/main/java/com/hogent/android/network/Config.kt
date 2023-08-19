@@ -1,5 +1,9 @@
 package com.hogent.android.network
 
+import com.hogent.android.network.ParseClasses.DateTimeParser
+import com.hogent.android.network.ParseClasses.VirtualMachineBackupParser
+import com.hogent.android.network.ParseClasses.VirtualMachineModusParser
+import com.hogent.android.network.ParseClasses.VirtualMachineOperatingSystemParser
 import com.squareup.moshi.*
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.OkHttpClient
@@ -21,7 +25,11 @@ class Config {
         private const val BASE_URL = "http://10.0.2.2:5000/api/"
         val moshi = Moshi.Builder()
             .add(KotlinJsonAdapterFactory())
+            .add(VirtualMachineOperatingSystemParser())
+            .add(VirtualMachineBackupParser())
+            .add(DateTimeParser())
             .add(LocalDateAdapter())
+            .add(VirtualMachineModusParser())
             .build()
 
         val okHttpClient = OkHttpClient.Builder()
