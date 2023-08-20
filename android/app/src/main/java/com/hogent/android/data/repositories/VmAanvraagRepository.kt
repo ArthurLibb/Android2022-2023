@@ -1,11 +1,11 @@
 package com.hogent.android.data.repositories
 
 import com.hogent.android.data.entities.*
+import com.hogent.android.network.dtos.request.BackUpDtoCreateVm
 import com.hogent.android.network.dtos.request.CreateProjectDto
-import com.hogent.android.network.dtos.response.DetailsVirtualMachine
-import com.hogent.android.network.dtos.response.ProjectResponse
-import com.hogent.android.network.dtos.response.ProjectResponseAfterCreate
-import com.hogent.android.network.services.ContractApi
+import com.hogent.android.network.dtos.request.VirtualMachineCreateRequest
+import com.hogent.android.network.dtos.request.VirtualMachineDtoCreate
+import com.hogent.android.network.dtos.response.*
 import com.hogent.android.network.services.ProjectApi
 import com.hogent.android.network.services.VirtualMachineApi
 import com.hogent.android.ui.components.forms.RequestForm
@@ -19,26 +19,24 @@ class VmAanvraagRepository() {
 
     private val customerId = AuthenticationManager.getKlantId()!!
 
-    private val contractApi = ContractApi.retrofitService;
     private val vmApi = VirtualMachineApi.retrofitService;
     private val projectApi = ProjectApi.retrofitService;
 
 
-    suspend fun create(form: RequestForm){
-        /*val hardware = HardWare(form.memory!!, form.storage!!, form.cpuCoresValue!!)
-        val backup = Backup(form.backUpType, null)
-
-        /*Dto maken*/
-        val startDate = form.startDate!!
-        val endDate = form.endDate!!
-        val dto = ContractDto(startDate, endDate)
-        val contract: Contract = contractApi.createContract(dto)
+    suspend fun create(form: RequestForm) : VirtualMachineReponseCreate? {
+        val hardware = HardWare(form.memory!!, form.storage!!, form.cpuCoresValue!!)
+        val backup = BackUpDtoCreateVm(form.backUpType, null)
 
         /*vm maken*/
-        val vm = DetailsVirtualMachine(name = form.naamVm!!, mode = form.modeVm!!, hardware = hardware, backup = backup, operatingSystem = form.os!!, contractId = contract.id, projectId = form.project_id!!)
+        val vm = VirtualMachineDtoCreate(name = form.naamVm!!, hardware =  hardware, operatingSystem = form.os!!
+                                        , backUp = backup, projectId = form.project_id!!, start = form.startDate!!, end= form.endDate!! )
         Timber.d(vm.toString())
-
-        vmApi.createVM(vm)*/
+        val requestObj = VirtualMachineCreateRequest(virtualMachine = vm, customerId)
+        val reponse = vmApi.createVM(requestObj)
+        if(reponse.isSuccessful){
+            return reponse.body()
+        }
+        return null
     }
 
     suspend fun getProjecten(): ProjectResponse? {
@@ -58,5 +56,12 @@ class VmAanvraagRepository() {
         return  null
     }
 
+    suspend fun getVmsByProjectId(projectId : Int): VirtualMachineReponse?{
+        val reponse = vmApi.getByProjectId(projectId);
+        if(reponse.isSuccessful){
+            return reponse.body()
+        }
+        return null
+    }
 
 }

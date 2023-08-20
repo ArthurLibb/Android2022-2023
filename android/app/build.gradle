@@ -5,6 +5,7 @@ plugins {
     id 'kotlin-parcelize'
     id 'kotlin-kapt'
     id 'androidx.navigation.safeargs'
+    id("org.jlleitschuh.gradle.ktlint") version "11.1.0"
 }
 
 
@@ -44,6 +45,7 @@ android {
     dataBinding{
         enabled = true
     }
+
 }
 
 dependencies {

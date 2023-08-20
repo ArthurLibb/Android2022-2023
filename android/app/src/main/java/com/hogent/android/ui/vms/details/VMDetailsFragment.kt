@@ -22,7 +22,8 @@ class VMDetailsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_vm_details, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_vm_details,
+            container, false)
 
 
         var vm_id : Int = arguments!!.getInt("vm_id")
@@ -35,7 +36,8 @@ class VMDetailsFragment : Fragment() {
 
         viewModel.navBack.observe(viewLifecycleOwner, Observer{
             if(it){
-                NavHostFragment.findNavController(this).navigate(VMDetailsFragmentDirections.actionFromDetailToVmlist())
+                NavHostFragment.findNavController(this)
+                    .navigate(VMDetailsFragmentDirections.actionFromDetailToVmlist())
             }
         })
 

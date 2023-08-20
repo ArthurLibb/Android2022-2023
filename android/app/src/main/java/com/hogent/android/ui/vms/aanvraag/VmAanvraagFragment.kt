@@ -100,7 +100,7 @@ class VmAanvraagFragment : Fragment(){
         OperatingSystem.values().sortedBy { it.name }.forEachIndexed{ index, it ->
             if(it.name != "NONE"){
                 val btn = RadioButton(buttonContainer.context)
-                btn.text = it.toString()
+                btn.text = it.to_string()
                 btn.setHintTextColor(Color.BLACK)
                 btn.setTextColor(Color.BLACK)
                 btn.buttonTintList = tintlist
@@ -139,9 +139,8 @@ class VmAanvraagFragment : Fragment(){
         })
 
 //BACKUP
-
         val listBackup : MutableList<String> =  mutableListOf("")
-            listBackup.addAll(BackupType.values().map { it.toString() })
+            listBackup.addAll(BackupType.values().map { it.to_string() })
         val spinnerBackup = binding.root.findViewById<Spinner>(R.id.backupVmDropdownList)
         val adapter = ArrayAdapter(context, android.R.layout.simple_spinner_item, listBackup)
         adapter.setDropDownViewResource(R.layout.spinner_dropdown_item)
@@ -191,12 +190,13 @@ class VmAanvraagFragment : Fragment(){
             override fun onNothingSelected(p0: AdapterView<*>?) {}
         }
 
-
+//OS
         binding.groupOsVm.setOnCheckedChangeListener { radioGroup, i ->
             val value = binding.root.findViewById<RadioButton>(radioGroup.checkedRadioButtonId)
             binding.viewmodel!!.osChanged(value?.text.toString())
         }
 
+//STARTDATE
         binding.startDateVmAanvraag.setOnDateChangedListener { datePicker, year, month, day ->
             try {
                 val start = LocalDate.of(year, Month.of(Month.values()[month].ordinal + 1), day);
@@ -207,7 +207,7 @@ class VmAanvraagFragment : Fragment(){
             }
         }
 
-
+//ENDDATE
         binding.endDateVmAanvraag.setOnDateChangedListener { datePicker, year, month, day ->
             try {
                 val end = LocalDate.of(year, Month.of(Month.values()[month].ordinal + 1), day);

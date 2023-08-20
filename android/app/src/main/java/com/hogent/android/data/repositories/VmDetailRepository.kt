@@ -2,13 +2,11 @@ package com.hogent.android.data.repositories
 
 import com.hogent.android.data.entities.Contract
 import com.hogent.android.network.dtos.response.DetailsVirtualMachine
-import com.hogent.android.network.services.ContractApi
 import com.hogent.android.network.services.VirtualMachineApi
 import timber.log.Timber
 
 class VmDetailRepository(val vm_id : Int) {
 
-    private val contractApi = ContractApi.retrofitService;
     private val vmApi = VirtualMachineApi.retrofitService;
 
 

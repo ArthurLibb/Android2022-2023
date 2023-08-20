@@ -48,7 +48,7 @@ class LoginViewModel(val repository: LoginRepository): ViewModel(){
             }
 
             repository.login(mail.value.toString(), _pass.value.toString()).let {
-                if (it != null) {
+                if (it != null && it.id != -1) {
                     _success.postValue(true)
 
                 }else{

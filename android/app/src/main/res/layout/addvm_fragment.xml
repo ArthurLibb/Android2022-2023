@@ -167,8 +167,6 @@
                     android:layout_height="match_parent"
                     android:textColor="@color/black"
                     android:textColorHint="@color/black">
-
-
                 </RadioGroup>
 
                 <TextView
@@ -233,7 +231,6 @@
                     android:text="@string/backup_vm_aanvraag"
                     android:textColor="@color/black"
                     android:textColorHint="@color/black" />
-
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/spinner_backup_layout"

@@ -157,22 +157,13 @@ class VmAanvraagViewModel(val repo : VmAanvraagRepository): ViewModel() {
         
         else{
             runBlocking {
-                /*val vm = repo.getVmsByProjectId(_form.value!!.project_id!!)
-
-                if (!vm.isSuccessful) {
-                    _errorToast.postValue(true)
-                    return@runBlocking
-                }
-
-                val listvm = vm.body()
-
-                if (listvm == null || listvm.isEmpty()) {
+                val vm = repo.getVmsByProjectId(_form.value!!.project_id!!)
+                if (vm ==null || vm.virtualMachines == null || vm.virtualMachines.isEmpty()) {
                     handleSuccessfulResponse()
                     _navToList.postValue(true)
                     return@runBlocking
                 }
-
-                val vms = listvm!!.filter { vm -> vm.name.equals(_form.value!!.naamVm, true) }
+                val vms = vm.virtualMachines!!.filter { vm -> vm.name.equals(_form.value!!.naamVm, true) }
 
                 if (vms!!.isNotEmpty()) {
                     _vmNaamBestaatAl.postValue(true);
@@ -180,7 +171,7 @@ class VmAanvraagViewModel(val repo : VmAanvraagRepository): ViewModel() {
                 } else {
                     handleSuccessfulResponse()
                     _navToList.postValue(true)
-                }*/
+                }
             }
         }
 
@@ -188,7 +179,10 @@ class VmAanvraagViewModel(val repo : VmAanvraagRepository): ViewModel() {
 
     private fun handleSuccessfulResponse() {
         runBlocking {
-            //repo.create(form.value!!)
+            val reponse = repo.create(form.value!!)
+            if(reponse == null){
+
+            }
             _form.postValue(RequestForm())
             _success.postValue(true)
         }
